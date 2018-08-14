@@ -3,6 +3,11 @@ steps:
   args: ['install']
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/k8s-demo-sum-service:$SHORT_SHA', '.' ]
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['set', 'image', 'deployment/sum-service', 'sum-service=gcr.io/$PROJECT_ID/k8s-demo-sum-service:$SHORT_SHA']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-demo'
 images:
 - 'gcr.io/$PROJECT_ID/k8s-demo-sum-service'
 tags:
